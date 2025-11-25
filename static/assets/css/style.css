@@ -1,0 +1,184 @@
+/* ====================== 
+   ThreatIntelGPT - style.css 
+   Clean, Professional, Modular UI Stylesheet
+   ====================== */
+
+/* ---------- Root Variables ---------- */
+:root {
+  --bg: #0a0f1f;
+  --bg-glass: rgba(20, 28, 48, 0.55);
+  --border-glow: rgba(130, 150, 255, 0.65);
+  --accent: #818cf8;
+  --accent2: #38bdf8;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --radius: 18px;
+  --shadow: 0 0 38px rgba(0,0,0,0.55);
+  --hover-glow: 0 0 16px rgba(130,150,255,0.45);
+}
+
+/* ---------- Base Reset ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+}
+
+/* ---------- Layout Wrapper ---------- */
+.app {
+  display: flex;
+  width: 100%;
+  padding: 22px;
+  gap: 22px;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: 260px;
+  background: var(--bg-glass);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-glow);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #020617;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: var(--hover-glow);
+}
+
+.nav-item {
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--muted);
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  background: rgba(130,150,255,0.20);
+  color: var(--text);
+  border: 1px solid var(--border-glow);
+  transform: translateY(-2px);
+  box-shadow: var(--hover-glow);
+}
+
+/* ---------- Main Area ---------- */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.header {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius);
+  padding: 22px;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Panels ---------- */
+.panel {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+
+/* ---------- Form Elements ---------- */
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border-glow);
+  background: rgba(15,23,42,0.75);
+  color: var(--text);
+  margin-bottom: 14px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent2);
+  box-shadow: var(--hover-glow);
+}
+
+button {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #020617;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  font-size: 14px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(130,150,255,0.4);
+}
+
+/* ---------- Reports ---------- */
+.reports-list {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.report-card {
+  background: rgba(15,23,42,0.90);
+  border-radius: var(--radius);
+  border: 1px solid rgba(130,150,255,0.4);
+  padding: 16px;
+  margin-bottom: 14px;
+  transition: 0.25s;
+}
+
+.report-card:hover {
+  border-color: var(--accent2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(130,150,255,0.35);
+}

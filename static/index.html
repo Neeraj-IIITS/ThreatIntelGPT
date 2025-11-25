@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ThreatIntelGPT – Cyber Threat Intelligence Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">TI</div>
+      <div class="logo-text">
+        <span>ThreatIntelGPT</span>
+        <span>NLP THREAT INTEL</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="nav-section-title">Navigation</div>
+      <ul class="nav-list">
+        <li class="nav-item active" data-section="overview">
+          <span class="icon">📊</span>
+          Overview
+          <small>live</small>
+        </li>
+        <li class="nav-item" data-section="cve">
+          <span class="icon">🧩</span>
+          CVE Analyzer
+        </li>
+        <li class="nav-item" data-section="voice">
+          <span class="icon">🎙️</span>
+          Voice Assistant
+        </li>
+        <li class="nav-item" data-section="settings">
+          <span class="icon">⚙️</span>
+          Settings
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <div>Model: <strong>Phi-2 (GPT4All)</strong></div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>Pipeline online – ready for ingestion</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- HEADER (same for all sections) -->
+    <section class="main-header">
+      <div class="main-header-left">
+        <h1>Cyber Threat Intelligence Summarization</h1>
+        <p>
+          Abstractive summarisation, IOC extraction, NER &amp; MITRE mapping on CTI feeds. 
+          Augmented with AI-powered CVE analysis and recommendations.
+        </p>
+      </div>
+      <div class="main-header-right">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span id="env-label">Environment: Local CPU (Intel)</span>
+        </div>
+        <div>Server: <strong>http://127.0.0.1:8000</strong></div>
+        <div id="clock"></div>
+      </div>
+    </section>
+
+    <!-- SECTION: OVERVIEW -->
+    <section id="section-overview" class="section active">
+      <section class="layout-grid">
+        <!-- LEFT: Ingest Panel -->
+        <div class="panel">
+          <div class="panel-title">Ingest</div>
+          <div class="panel-heading">Ingest Cyber Threat Intelligence Feeds</div>
+
+          <div>
+            <div class="field-label">RSS Feed URL</div>
+            <div class="field-row">
+              <input id="rss" value="https://www.cisa.gov/cybersecurity-advisories/all.xml" />
+            </div>
+
+            <div class="field-label">Max Items • Preset Feeds</div>
+            <div class="field-row">
+              <input id="count" type="number" value="3" min="1" max="10" style="max-width:90px;" />
+              <select id="presetFeed">
+                <option value="">Choose preset…</option>
+                <option value="https://www.cisa.gov/cybersecurity-advisories/all.xml">CISA Advisories</option>
+                <option value="https://krebsonsecurity.com/feed/">KrebsOnSecurity</option>
+                <option value="https://feeds.feedburner.com/TheHackersNews">The Hacker News</option>
+                <option value="https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml">NVD CVE Feed</option>
+              </select>
+            </div>
+
+            <div class="actions-row">
+              <button id="btn-ingest">
+                <span>⚡</span> <span>Run NLP Pipeline</span>
+              </button>
+              <button class="secondary" id="btn-refresh">
+                <span>🔄</span> <span>Refresh Saved Reports</span>
+              </button>
+            </div>
+
+            <div id="status" class="status-text">
+              <span class="dot"></span>
+              Ready. No active jobs.
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Stats Panel -->
+        <div class="panel">
+          <div class="panel-title">Analytics</div>
+          <div class="panel-heading">Pipeline Snapshot</div>
+          <div class="stats-row">
+            <div class="stat-pill">
+              <div class="stat-label">Total Reports</div>
+              <div class="stat-value" id="stat-total">–</div>
+              <div class="stat-sub">Saved in local SQLite DB</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-label">Last Ingest Source</div>
+              <div class="stat-value" id="stat-source">–</div>
+              <div class="stat-sub">Based on RSS URL</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-label">Approx. MITRE Hits</div>
+              <div class="stat-value" id="stat-mitre">–</div>
+              <div class="stat-sub">Latest batch techniques</div>
+            </div>
+          </div>
+          <div class="stats-help">
+            <strong>How to read this:</strong><br/>
+            • <em>Total Reports</em> – how many CTI items your NLP pipeline has summarised so far.<br/>
+            • <em>Last Ingest Source</em> – the domain of the last RSS feed you processed.<br/>
+            • <em>MITRE Hits</em> – number of techniques detected in the most recent ingestion batch.
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORTS LIST -->
+      <section class="panel reports-panel">
+        <div class="reports-header">
+          <h2>Saved Threat Intelligence Reports</h2>
+          <div class="reports-subtitle">
+            AI-generated summaries, MITRE mappings and deep-dive IOCs/NER for each CTI article.
+          </div>
+        </div>
+
+        <div class="reports-list" id="reports"></div>
+      </section>
+    </section>
+
+    <!-- SECTION: CVE ANALYZER -->
+    <section id="section-cve" class="section">
+      <section class="panel">
+        <div class="panel-title">CVE Analyzer</div>
+        <div class="panel-heading">AI-Powered CVE Explanation (Phi-2)</div>
+
+        <div class="cve-layout">
+          <!-- LEFT: INPUT & RAW CVE -->
+          <div>
+            <div class="field-label">CVE ID</div>
+            <div class="field-row">
+              <input id="cve-id" placeholder="e.g., CVE-2024-3094" />
+              <button id="btn-cve">
+                <span>🧩</span><span>Analyze</span>
+              </button>
+            </div>
+            <div id="cve-status" class="status-text">
+              <span class="dot"></span>Enter a CVE ID and click Analyze.
+            </div>
+
+            <div id="cve-details"></div>
+          </div>
+
+          <!-- RIGHT: AI EXPLANATION -->
+          <div>
+            <div class="ai-explanation">
+              <div class="ai-explanation-title">AI Explanation</div>
+              <div id="cve-ai-text" class="ai-explanation-body">
+                The Phi-2 model will generate an explanation here based on the CVE description, severity and CVSS score.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- SECTION: VOICE ASSISTANT -->
+<section id="section-voice" class="section">
+  <section class="panel">
+    <div class="panel-title">Voice Assistant</div>
+    <div class="panel-heading">Hands-free Threat Intelligence Queries</div>
+
+    <div class="voice-card">
+
+      <div class="voice-text">
+        Ask things like:<br/>
+        • “Explain ransomware attack pattern.”<br/>
+        • “What is the impact of CVE-2024-3094?”<br/>
+        • “What are Indicators of Compromise?”
+      </div>
+
+      <!-- Microphone Button -->
+      <button class="mic-button" id="mic-btn">
+        🎙️
+      </button>
+
+      <!-- Listening status -->
+      <div class="voice-status" id="voice-status">
+        Click the microphone to start speaking.
+      </div>
+
+      <!-- User recognized transcript -->
+      <div class="voice-output" id="voice-text">
+        <strong>You said:</strong><br/>
+        <span id="recognized-text">—</span>
+      </div>
+
+      <!-- AI Response -->
+      <div class="voice-output" id="voice-response">
+        <strong>AI Response:</strong><br/>
+        <span id="response-text">—</span>
+      </div>
+
+    </div>
+  </section>
+</section>
+
+
+    <!-- SECTION: SETTINGS -->
+    <section id="section-settings" class="section">
+      <section class="panel">
+        <div class="panel-title">Settings</div>
+        <div class="panel-heading">System &amp; Model Information</div>
+
+        <p class="settings-text">
+          This section is for documentation / viva:
+        </p>
+        <ul class="settings-list">
+          <li><strong>Backend:</strong> Python, FastAPI, SQLite</li>
+          <li><strong>NLP Stack:</strong> HuggingFace Transformers (summarization), spaCy (NER), regex-based IOC extraction, MITRE keyword mapping</li>
+          <li><strong>AI Models:</strong> Phi-2 via GPT4All for CVE explanation and (later) recommendations &amp; voice queries</li>
+          <li><strong>Front-end:</strong> Pure HTML, CSS, JavaScript (SPA-style sections)</li>
+        </ul>
+      </section>
+    </section>
+  </main>
+</div>
+
+<!-- Main JS -->
+<script src="/static/js/app.js" defer></script>
+
+</body>
+</html>
