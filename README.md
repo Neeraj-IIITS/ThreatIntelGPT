@@ -174,6 +174,17 @@ Frontend
 
 ---
 
+### **🖼️ Screenshots**
+<img width="1919" height="1126" alt="image" src="https://github.com/user-attachments/assets/128dc47e-3bff-48d0-8841-199a72fe6fdd" />
+
+<img width="1919" height="1127" alt="image" src="https://github.com/user-attachments/assets/4ab718d1-1262-4a0e-9da9-9d1f7e393110" />
+
+<img width="1919" height="1126" alt="image" src="https://github.com/user-attachments/assets/c0a95147-4221-4b37-94c9-d17aa318d908" />
+
+<img width="1919" height="1122" alt="image" src="https://github.com/user-attachments/assets/b1c71e53-ecde-4c63-bc3a-ffd3605fbfe3" />
+
+---
+
 ### **🔮 Future Enhancements**
 - Full speech-to-text backend pipeline
 - LLM-powered multi-document summarisation
@@ -200,3 +211,4 @@ git commit -m "Added ThreatIntelGPT README.md"
 git push
 ```
 ---
+
